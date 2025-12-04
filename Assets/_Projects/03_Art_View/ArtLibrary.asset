@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
+  m_Name: ArtLibrary
+  m_EditorClassIdentifier: 
+  m_GuidLow: 5576160531426538758
+  m_GuidHigh: 6695397845500182716
+  m_DataStore:
+    m_Storage: []
+  m_Images:
+  - m_SerializedGuid:
+      m_GuidLow: 4889332265897787911
+      m_GuidHigh: 4887591944766693822
+    m_SerializedTextureGuid:
+      m_GuidLow: 4176221845303503297
+      m_GuidHigh: 17294020827051446186
+    m_Size: {x: 0.21, y: 0.31778058}
+    m_SpecifySize: 1
+    m_Name: mona-lisa.jpg!HD
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5440764801946370510
+      m_GuidHigh: 2957494464630976410
+    m_SerializedTextureGuid:
+      m_GuidLow: 10710686009045941055
+      m_GuidHigh: 2025932063957809290
+    m_Size: {x: 0.21, y: 0.26751593}
+    m_SpecifySize: 1
+    m_Name: the-scream.jpg!HD
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4625136762750705116
+      m_GuidHigh: 17544638362359404929
+    m_SerializedTextureGuid:
+      m_GuidLow: 7184551388785568824
+      m_GuidHigh: 14934968747558888090
+    m_Size: {x: 0.21, y: 0.16622691}
+    m_SpecifySize: 1
+    m_Name: the-starry-night.jpg!HD
+    m_Texture: {fileID: 0}
