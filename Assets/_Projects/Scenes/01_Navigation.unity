@@ -186,11 +186,8 @@ MonoBehaviour:
     altitude: 70.12007385253906
   IsConfigured: 1
   Visualization: {fileID: 1026231706}
-  m_LocalizationMethodObject: {fileID: 501130906}
-  m_SerializedMapOptions:
-  - TypeName: Immersal.XR.MapLoadingOption, Immersal.Core, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    Data: '{"m_SerializedDataSource":0,"DownloadVisualizationAtRuntime":false,"Bytes":[]}'
+  m_LocalizationMethodObject: {fileID: 1238521508}
+  m_SerializedMapOptions: []
 --- !u!1 &58125393
 GameObject:
   m_ObjectHideFlags: 0
@@ -1553,6 +1550,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4803580791226008317, guid: 2c6deb7afc7d34561941b1429c48ffaf, type: 3}
+      propertyPath: m_ConfigurationMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876485604010972054, guid: 2c6deb7afc7d34561941b1429c48ffaf, type: 3}
+      propertyPath: developerToken
+      value: 358c82f126d16fc120306acb3f03d998737f22ef24d84086c507f6a46664fbe4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1738,7 +1743,7 @@ MonoBehaviour:
     altitude: 66.85990196228028
   IsConfigured: 1
   Visualization: {fileID: 1175827594}
-  m_LocalizationMethodObject: {fileID: 0}
+  m_LocalizationMethodObject: {fileID: 501130906}
   m_SerializedMapOptions:
   - TypeName: Immersal.XR.MapLoadingOption, Immersal.Core, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
@@ -3048,7 +3053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e870a96aef1a4fb0b543d281fcb163e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ProcessPoses: 1
+  m_ProcessPoses: 0
   m_DataProcessors:
   - {fileID: 479360325}
   - {fileID: 622448498}
@@ -3718,6 +3723,17 @@ MonoBehaviour:
   m_Mesh: {fileID: 835536069}
   m_MeshFilter: {fileID: 1175827593}
   m_MeshRenderer: {fileID: 1175827592}
+--- !u!114 &1238521508 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4803580791226008317, guid: 2c6deb7afc7d34561941b1429c48ffaf, type: 3}
+  m_PrefabInstance: {fileID: 501130905}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ac8f41066bd43cca7a925e70116602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1241234975
 GameObject:
   m_ObjectHideFlags: 0
