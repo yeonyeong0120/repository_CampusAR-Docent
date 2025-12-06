@@ -26,7 +26,7 @@ MonoBehaviour:
     m_Size: {x: 0.21, y: 0.31778058}
     m_SpecifySize: 1
     m_Name: MonaLisa
-    m_Texture: {fileID: 0}
+    m_Texture: {fileID: 2800000, guid: 488aa9c1eba439f4aacf9b8650b400f0, type: 3}
   - m_SerializedGuid:
       m_GuidLow: 5440764801946370510
       m_GuidHigh: 2957494464630976410
@@ -46,4 +46,4 @@ MonoBehaviour:
     m_Size: {x: 0.21, y: 0.16622691}
     m_SpecifySize: 1
     m_Name: StarryNight
-    m_Texture: {fileID: 0}
+    m_Texture: {fileID: 2800000, guid: 371a6c38a76c63b49ae2ce71f2aa43cf, type: 3}

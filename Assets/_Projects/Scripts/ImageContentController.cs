@@ -1,75 +1,78 @@
 using UnityEngine;
-using UnityEngine.XR.ARFoundation; // AR 기능 필수
+using UnityEngine.XR.ARFoundation;
 
 public class ImageContentController : MonoBehaviour
 {
-    [Header("여기에 각 작품별 오브젝트를 연결하세요")]
-    public GameObject effectStarryNight; // 별이 빛나는 밤 (UFO)
-    public GameObject effectScream;      // 절규 (나중에 추가)
-    public GameObject effectMonaLisa;    // 모나리자 (나중에 추가)
+    [Header("각 작품별 오브젝트/이펙트 모음 연결")]
+    public GameObject effectStarryNight;
+    public GameObject effectScream;
+    public GameObject effectMonaLisa;
 
     private ARTrackedImage trackedImage;
-    private bool isInitialized = false;
+    private string currentActiveName = "";
 
     void Awake()
     {
-        // 내 몸에 붙어있는 ARTrackedImage 컴포넌트를 찾아옴
         trackedImage = GetComponent<ARTrackedImage>();
+    }
+
+    void Start()
+    {
+        DisableAll();
     }
 
     void Update()
     {
-        // 1. 이미 초기화가 끝났으면 더 이상 검사하지 않음 (성능 최적화)
-        if (isInitialized) return;
+        //Debug.Log("업데이트 돌아가는 중..."); // 디버그용 추가
 
-        // 2. ARTrackedImage 컴포넌트가 없거나, 아직 referenceImage 데이터가 안 들어왔으면 대기
         if (trackedImage == null)
         {
             trackedImage = GetComponent<ARTrackedImage>();
             return;
         }
 
-        if (trackedImage.referenceImage == null) return; // 데이터가 준비될 때까지 기다림
+        if (trackedImage.referenceImage == null) return;
 
-        // 3. 드디어 이름(데이터)이 들어왔다면 컨텐츠 갱신 실행!
         UpdateContent();
     }
 
     void UpdateContent()
     {
-        // 등록된 이미지의 이름 가져오기
-        string imageName = trackedImage.referenceImage.name;
+        string newName = trackedImage.referenceImage.name;
 
-        // 이름이 비어있으면(Null) 아직 준비 중인 것이니 멈춤! (여기서 에러 방지)
-        if (string.IsNullOrEmpty(imageName))
-        {
-            return;
-        }
+        // 이름이 비어있거나 Null이면? -> "아직 로딩 중이구나" 하고 바로 되돌아가기!
+        // 이 코드가 없어서 아까 에러가 난 겁니다.
+        if (string.IsNullOrEmpty(newName)) return;
 
-        Debug.Log($"[AR] 프리팹 생성됨! 인식된 이미지: {imageName}");
+        // 아까랑 똑같은 거면 무시 (최적화)
+        if (currentActiveName == newName) return;
 
-        // 혹시 연결 안 된 오브젝트가 있어도 에러 안 나게 체크
-        if (effectStarryNight != null) effectStarryNight.SetActive(false);
-        if (effectScream != null) effectScream.SetActive(false);
-        if (effectMonaLisa != null) effectMonaLisa.SetActive(false);
+        // ------------------------------------------------
+        // 여기까지 왔으면 안전함! 이제직동 시작
 
-        // 이름 비교 및 켜기
-        if (imageName.Contains("Starry"))
+        DisableAll();
+
+        currentActiveName = newName;
+        Debug.Log($"[AR] 이미지 변경 감지! -> {newName}");
+
+        if (newName.Contains("Starry"))
         {
             if (effectStarryNight != null) effectStarryNight.SetActive(true);
         }
-        else if (imageName.Contains("Scream"))
+        else if (newName.Contains("Scream"))
         {
             if (effectScream != null) effectScream.SetActive(true);
         }
-        else if (imageName.Contains("Mona"))
+        else if (newName.Contains("Mona"))
         {
             if (effectMonaLisa != null) effectMonaLisa.SetActive(true);
         }
-
-        // 여기까지 무사히 왔으면 초기화 완료!
-        isInitialized = true;
     }
 
-
-} // class
+    void DisableAll()
+    {
+        if (effectStarryNight != null) effectStarryNight.SetActive(false);
+        if (effectScream != null) effectScream.SetActive(false);
+        if (effectMonaLisa != null) effectMonaLisa.SetActive(false);
+    }
+}
