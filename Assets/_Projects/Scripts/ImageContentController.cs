@@ -27,22 +27,28 @@ public class ImageContentController : MonoBehaviour
         // 1. 현재 인식된 이미지의 이름을 알아냄 (Reference Image Library에 등록한 이름!)
         string imageName = trackedImage.referenceImage.name;
 
-        // 2. 일단 모든 이펙트를 다 끕니다 (초기화)
+        // 디버깅용: 도대체 무슨 이름으로 인식되는지 로그로 찍어봅니다.
+        Debug.Log($"[AR] 인식된 이미지 이름: '{imageName}'");
+
+        // 일단 다 끕니다
         if (effectStarryNight != null) effectStarryNight.SetActive(false);
         if (effectScream != null) effectScream.SetActive(false);
         if (effectMonaLisa != null) effectMonaLisa.SetActive(false);
 
-        // 3. 이름표를 확인해서 맞는 것만 켭니다 (Switch)
-        if (imageName == "StarryNight") // 라이브러리 이름과 토씨 하나 틀리지 않고 같아야 함!
+        // [수정된 부분] == (완전일치) 대신 Contains (포함)를 사용합니다!
+        // "StarryNight", "the-starry-night", "StarryNight " 뭐든 다 통과됩니다.
+        if (imageName.Contains("Starry"))
         {
             if (effectStarryNight != null) effectStarryNight.SetActive(true);
         }
-        else if (imageName == "Scream")
+        else if (imageName.Contains("Scream"))
         {
             if (effectScream != null) effectScream.SetActive(true);
         }
+        else if (imageName.Contains("Mona"))
+        {
+            if (effectMonaLisa != null) effectMonaLisa.SetActive(true);
+        }
 
-        // 디버깅용 로그 (나중에 지우세요)
-        Debug.Log($"인식된 이미지: {imageName}");
     }
 }
