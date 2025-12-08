@@ -11,6 +11,7 @@ public class ImageContentController : MonoBehaviour
     private ARTrackedImage trackedImage;
     private string currentActiveName = "";
 
+
     void Awake()
     {
         trackedImage = GetComponent<ARTrackedImage>();
@@ -19,6 +20,7 @@ public class ImageContentController : MonoBehaviour
     void Start()
     {
         DisableAll();
+
     }
 
     void Update()
@@ -67,6 +69,27 @@ public class ImageContentController : MonoBehaviour
         {
             if (effectMonaLisa != null) effectMonaLisa.SetActive(true);
         }
+    }
+
+    // close 버튼
+    // close 버튼 (기능을 On/Off 토글로 변경)
+    public void ToggleContent()
+    {
+        // [추가] 현재 StarryNight 이펙트가 켜져 있는지 확인하여 상태를 전환합니다.
+        // (effectStarryNight.activeSelf로 현재 콘텐츠의 켜짐/꺼짐 상태를 확인합니다.)
+        if (effectStarryNight != null && effectStarryNight.activeSelf)
+        {
+            // 현재 켜져 있으면: 모두 끕니다 (OFF)
+            DisableAll();
+        }
+        else
+        {
+            // 현재 꺼져 있으면: 이미지 이름에 맞는 콘텐츠를 켭니다 (ON)
+            UpdateContent();
+        }
+
+        // [삭제] 기존의 'this.gameObject.SetActive(false);' 코드는 삭제합니다.
+        // 이 코드가 AR Content Master 프리팹 자체를 비활성화시켜 콘텐츠가 영영 사라지게 만들었습니다.
     }
 
     void DisableAll()
