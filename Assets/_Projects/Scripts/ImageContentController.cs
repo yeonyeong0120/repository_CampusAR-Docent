@@ -53,9 +53,17 @@ public class ImageContentController : MonoBehaviour
         // 여기까지 왔으면 안전함! 이제직동 시작
 
         DisableAll();
-
         currentActiveName = newName;
+
+        // 디버그 추가,,,,
         Debug.Log($"[AR] 이미지 변경 감지! -> {newName}");
+
+
+        // ui 매니저한테 알림
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.OnImageRecognized(newName);
+        }
 
         if (newName.Contains("Starry"))
         {
@@ -85,6 +93,7 @@ public class ImageContentController : MonoBehaviour
         else
         {
             // 현재 꺼져 있으면: 이미지 이름에 맞는 콘텐츠를 켭니다 (ON)
+            currentActiveName = "";
             UpdateContent();
         }
 
