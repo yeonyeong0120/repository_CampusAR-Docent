@@ -65,10 +65,22 @@ public class WikiAPIManager : MonoBehaviour
                 {
                     WikiResponse response = JsonUtility.FromJson<WikiResponse>(jsonResult);
 
-                    // 3. 내용물(extract)만 쏙 빼서 UI 매니저에게 전달
                     if (response != null && !string.IsNullOrEmpty(response.extract))
                     {
-                        onResultFound(response.extract);
+                        // 1. 원본 꺼내기
+                        string cleanDescription = response.extract;
+
+                        // 2. 특수 공백(\u00A0) 제거
+                        cleanDescription = cleanDescription.Replace("\u00A0", " ");
+
+                        // 3. 네모로 나오는 괄호(《 》) 바꿔치기
+                        cleanDescription = cleanDescription.Replace("《", "<").Replace("》", ">");
+
+                        // 4. 앞뒤 공백 제거
+                        cleanDescription = cleanDescription.Trim();
+
+                        // 5. 깨끗해진 텍스트를 UI로 배달!
+                        onResultFound(cleanDescription);
                     }
                 }
                 catch (Exception e)

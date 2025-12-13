@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.UI;
 
 public class ImageContentController : MonoBehaviour
 {
@@ -20,6 +21,24 @@ public class ImageContentController : MonoBehaviour
     void Start()
     {
         DisableAll();
+
+        // UIManager야, 니가 들고 있는 'toggleARButton' 좀 빌려줘!
+        if (UIManager.Instance != null && UIManager.Instance.toggleARButton != null)
+        {
+            // 버튼 컴포넌트를 가져옵니다.
+            Button btn = UIManager.Instance.toggleARButton.GetComponent<Button>();
+
+            if (btn != null)
+            {
+                // 만약 이전에 연결된 게 있다면 지우고 (중복 방지)
+                btn.onClick.RemoveAllListeners();
+
+                // 내 기능(ToggleContent)을 연결해라!
+                btn.onClick.AddListener(ToggleContent);
+
+                Debug.Log("[AR] 토글 버튼이 성공적으로 연결되었습니다!");
+            }
+        }
 
     }
 
@@ -48,9 +67,6 @@ public class ImageContentController : MonoBehaviour
 
         // 아까랑 똑같은 거면 무시 (최적화)
         if (currentActiveName == newName) return;
-
-        // ------------------------------------------------
-        // 여기까지 왔으면 안전함! 이제직동 시작
 
         DisableAll();
         currentActiveName = newName;
