@@ -489,7 +489,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 272215488}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 482348915}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OpenBottomSheet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &272215488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -834,6 +846,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scanGuideGroup: {fileID: 965104366}
   showDescButton: {fileID: 272215485}
+  toggleARButton: {fileID: 0}
+  bottomSheetPanel: {fileID: 1513440499}
+  txtTitle: {fileID: 1286250047}
+  txtBody: {fileID: 847969179}
+  artworkDatabase:
+  - id: StarryNight
+    title: "\uBCC4\uC774 \uBE5B\uB098\uB294 \uBC24"
+    description: "\uBE48\uC13C\uD2B8 \uBC18 \uACE0\uD750\uC758 1889\uB144 \uB300\uD45C\uC791\uC785\uB2C8\uB2E4.
+      \uC0DD\uB808\uBBF8 \uC694\uC591\uC6D0\uC758 \uBC24\uD558\uB298\uC744 \uC18C\uC6A9\uB3CC\uC774\uCE58\uB294
+      \uBD93\uD130\uCE58\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4."
+  - id: Scream
+    title: "\uC808\uADDC"
+    description: "\uC5D0\uB4DC\uBC14\uB974 \uBB49\uD06C\uC758 \uD45C\uD604\uC8FC\uC758
+      \uAC78\uC791\uC785\uB2C8\uB2E4. \uD54F\uBE5B \uB178\uC744 \uC544\uB798\uC5D0\uC11C
+      \uB290\uB07C\uB294 \uC790\uC5F0\uC758 \uAC70\uB300\uD55C \uBE44\uBA85\uC744
+      \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4."
+  - id: MonaLisa
+    title: "\uBAA8\uB098\uB9AC\uC790"
+    description: "\uBAA8\uB098\uB9AC\uC790 \uC124\uBA85..."
 --- !u!4 &482348916
 Transform:
   m_ObjectHideFlags: 0
@@ -2049,7 +2080,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 10
 --- !u!222 &1513440502
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2742,7 +2773,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -110, y: -54}
+  m_AnchoredPosition: {x: -68, y: -54}
   m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1951763479
@@ -2788,7 +2819,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1951763480}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 482348915}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: CloseBottomSheet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1951763480
 MonoBehaviour:
   m_ObjectHideFlags: 0
