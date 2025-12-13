@@ -698,7 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e11bbb5d87621f4e8832bff754bf19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scanGuidePanel: {fileID: 965104362}
+  scanGuideGroup: {fileID: 965104366}
   showDescButton: {fileID: 272215485}
 --- !u!4 &482348916
 Transform:
@@ -1132,6 +1132,7 @@ GameObject:
   - component: {fileID: 965104363}
   - component: {fileID: 965104365}
   - component: {fileID: 965104364}
+  - component: {fileID: 965104366}
   m_Layer: 5
   m_Name: Panel_ScanGuide
   m_TagString: Untagged
@@ -1199,6 +1200,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965104362}
   m_CullTransparentMesh: 1
+--- !u!225 &965104366
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965104362}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1093523504
 GameObject:
   m_ObjectHideFlags: 0
