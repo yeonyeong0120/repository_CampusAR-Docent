@@ -93,6 +93,7 @@ public class ImageContentController : MonoBehaviour
         else
         {
             // 현재 꺼져 있으면: 이미지 이름에 맞는 콘텐츠를 켭니다 (ON)
+            currentActiveName = "";
             UpdateContent();
         }
 
