@@ -1,118 +1,94 @@
-// Nav_Manager.cs
-//
-// ¿ªÇÒ: VPS (02_vps ¾À)¿¡¼­ ÀÌ¹ÌÁö Æ®·¡Å· (03_art ¾À)À¸·Î ÀüÈ¯À» °ü¸®ÇÏ´Â ½ºÅ©¸³Æ®ÀÔ´Ï´Ù.
-// ÁÖ¿ä ±â´É:
-// 1. »ç¿ëÀÚ À§Ä¡ ±â¹İ µµÂø ÆÇÁ¤ (Navigation Á¾·á)
-// 2. Immersal (VPS) ¸®¼Ò½º ºñÈ°¼ºÈ­ ¹× Á¤¸®
-// 3. Post ProcessingÀ» »ç¿ëÇÑ '»¡·Á µé¾î°¡´Â' ½Ã°¢ È¿°ú ¾Ö´Ï¸ŞÀÌ¼Ç ¿¬Ãâ
-// 4. ¾Ö´Ï¸ŞÀÌ¼Ç ¿Ï·á ÈÄ ´ÙÀ½ ¾À(03_art) ·Îµå (Á¦¾î±Ç Àü´Ş)
-//
-// ´ã´çÀÚ: B (VPS Tech / Scene Transition Manager)
-// ¿¬°áµÈ ¾À: 02_vps (Navigation) -> 03_art (Viewing)
-// ==========================================================
-
-// Nav_Manager.cs (02_vps ¾ÀÀÇ ÀüÈ¯ Á¦¾î ½ºÅ©¸³Æ®)
-using System.Collections;
-using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
-// »ç¿ëÇÏ´Â ·»´õ ÆÄÀÌÇÁ¶óÀÎ¿¡ µû¶ó Ãß°¡ (¿¹: URP)
-// using UnityEngine.Rendering.Universal; 
+using UnityEngine.Rendering.PostProcessing; // íš¨ê³¼ ì œì–´ìš©
+using System.Collections;
+using TMPro;
 
 public class Nav_Manager : MonoBehaviour
 {
-    // ==========================================================
-    // 1. º¯¼ö ¼³Á¤: Inspector¿¡¼­ ¼³Á¤ÇÕ´Ï´Ù.
-    // ==========================================================
-    [Header("1. µµÂø ¹× ´ÙÀ½ ¾À ¼³Á¤")]
-    [SerializeField] private Vector3 targetPoint = Vector3.zero; // µµÂø ¸ñÇ¥ ÁÂÇ¥
-    [SerializeField] private float arrivalDistance = 1.0f;       // µµÂø Çã¿ë ¿ÀÂ÷ (1m)
-    [SerializeField] private string nextSceneName = "03_art";     // ´ÙÀ½ ¾À ÀÌ¸§
+    [Header("í•„ìˆ˜ ì—°ê²°")]
+    public Transform targetObject; // Goal_Point
+    public Transform arCamera;     // Main Camera
+    public GameObject enterButton; // Btn_EnterGallery
 
-    [Header("2. ½Ã°¢ È¿°ú ¼³Á¤")]
-    [SerializeField] private GameObject LoadingScreenUI;          // °ËÀº È­¸é °¡¸²¸· UI
+    [Header("ë””ë²„ê·¸ & íš¨ê³¼ (ìƒˆë¡œ ì¶”ê°€ë¨)")]
+    public TextMeshProUGUI distanceText; // Debug_Text
+    public PostProcessVolume globalVolume; // ë°©ê¸ˆ ë§Œë“  Global Volumeì„ ì—¬ê¸°ì— ë„£ìœ¼ì„¸ìš”!
 
-    // Post Processing ÀÌÆåÆ® Á¦¾î º¯¼ö
-    private Volume globalVolume;
-    private LensDistortion lensDistortion;
-    private ChromaticAberration chroma;
-    private bool isTransitionStarted = false;
+    [Header("ì„¤ì •")]
+    public float arrivalDistance = 1.5f;
+    public string nextSceneName = "02_Viewing"; // ì´ë™í•  ì”¬ ì´ë¦„
 
-    // ==========================================================
-    // 2. ÃÊ±âÈ­ (Start)
-    // ==========================================================
-    void Start()
+    private bool isArrived = false;
+
+    void Update()
     {
-        // ¾À¿¡ ÀÖ´Â Global Volume ÄÄÆ÷³ÍÆ® Ã£±â
-        globalVolume = FindObjectOfType<Volume>();
-        if (globalVolume != null && globalVolume.profile != null)
+        if (targetObject == null || arCamera == null) return;
+
+        // ê±°ë¦¬ ê³„ì‚° ë° í‘œì‹œ
+        float distance = Vector3.Distance(arCamera.position, targetObject.position);
+
+        if (distanceText != null)
+            distanceText.text = $"ë‚¨ì€ ê±°ë¦¬: {distance:F2}m";
+
+        // ë„ì°© íŒì •
+        if (!isArrived && distance < arrivalDistance)
         {
-            // Volume Profile¿¡¼­ ÀÌÆåÆ® ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
-            globalVolume.profile.TryGet(out lensDistortion);
-            globalVolume.profile.TryGet(out chroma);
-        }
-        else
-        {
-            Debug.LogError("Post Processing VolumeÀÌ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù. ½Ã°¢ È¿°ú°¡ ÀÛµ¿ÇÏÁö ¾Ê½À´Ï´Ù.");
+            isArrived = true;
+            if (enterButton != null) enterButton.SetActive(true);
         }
     }
 
-    // ==========================================================
-    // 3. µµÂø ÆÇÁ¤ ¹× ÀüÈ¯ Æ®¸®°Å
-    // (VPS Localization Manager¿¡¼­ »ç¿ëÀÚ À§Ä¡°¡ ¾÷µ¥ÀÌÆ®µÉ ¶§ È£ÃâµÇ¾î¾ß ÇÔ)
-    // ==========================================================
-    public void OnUserLocalized(Vector3 userPosition)
+    // ë²„íŠ¼ í´ë¦­ ì‹œ ì‹¤í–‰
+    public void OnClickEnterButton()
     {
-        if (isTransitionStarted) return;
-
-        // µµÂø ÆÇÁ¤
-        if (Vector3.Distance(userPosition, targetPoint) < arrivalDistance)
-        {
-            isTransitionStarted = true;
-
-            // VPS ºñÈ°¼ºÈ­ (´ÙÀ½ ¾À°úÀÇ ¸®¼Ò½º Ãæµ¹ ¹æÁö)
-            DisableImmersal();
-
-            // ½Ã°¢ È¿°ú ¹× ¾À ·Îµå ÄÚ·çÆ¾ ½ÃÀÛ
-            StartCoroutine(AnimateAndLoadScene(nextSceneName));
-        }
+        // ì½”ë£¨í‹´(ì‹œê°„ì°¨ ê³µê²©) ì‹œì‘
+        StartCoroutine(PlayEffectAndLoad());
     }
 
-    private void DisableImmersal()
+    IEnumerator PlayEffectAndLoad()
     {
-        // ¿©±â¿¡ Immersal SDK ¹× °ü·Ã AR Session ÄÄÆ÷³ÍÆ®¸¦ ºñÈ°¼ºÈ­ÇÏ´Â ·ÎÁ÷ »ğÀÔ
-    }
+        Debug.Log("ğŸš€ íš¨ê³¼ ì‹œì‘! ì”¬ ì´ë™ ì¤€ë¹„...");
 
-    // ==========================================================
-    // 4. ½Ã°¢ È¿°ú ¾Ö´Ï¸ŞÀÌ¼Ç ¹× ¾À ·Îµå (ÇÙ½É ·ÎÁ÷)
-    // ==========================================================
-    private IEnumerator AnimateAndLoadScene(string targetSceneName)
-    {
-        // 1. °ËÀº È­¸é °¡¸²¸· È°¼ºÈ­
-        if (LoadingScreenUI != null) LoadingScreenUI.SetActive(true);
+        // ë²„íŠ¼ê³¼ í…ìŠ¤íŠ¸ ìˆ¨ê¸°ê¸° (ê¹”ë”í•˜ê²Œ)
+        if (enterButton != null) enterButton.SetActive(false);
+        if (distanceText != null) distanceText.gameObject.SetActive(false);
 
-        float duration = 0.5f; // '»Ğ' ÇÏ´Â È¿°ú¸¦ À§ÇÑ ºü¸¥ ½Ã°£
+        float duration = 1.0f; // 1ì´ˆ ë™ì•ˆ íš¨ê³¼ ì§„í–‰
         float startTime = Time.time;
 
-        if (lensDistortion != null && chroma != null)
+        LensDistortion ld = null;
+        ChromaticAberration ca = null;
+
+        // ë³¼ë¥¨ì—ì„œ íš¨ê³¼ ì„¤ì • ê°€ì ¸ì˜¤ê¸°
+        if (globalVolume != null && globalVolume.profile != null)
         {
-            // 2. '»¡·Á µé¾î°¡´Â' ½Ã°¢ È¿°ú ¾Ö´Ï¸ŞÀÌ¼Ç ¿¬Ãâ
+            globalVolume.profile.TryGetSettings(out ld);
+            globalVolume.profile.TryGetSettings(out ca);
+        }
+
+        // íš¨ê³¼ ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
+        if (ld != null && ca != null)
+        {
             while (Time.time < startTime + duration)
             {
                 float t = (Time.time - startTime) / duration;
 
-                // ·»Áî ¿Ö°î: 0¿¡¼­ -100À¸·Î Áõ°¡
-                lensDistortion.intensity.value = Mathf.Lerp(0f, -100f, t);
+                // ë Œì¦ˆ ì™œê³¡: 0ì—ì„œ -100ê¹Œì§€ (ë¹¨ë ¤ë“¤ì–´ê°)
+                ld.intensity.value = Mathf.Lerp(0f, -100f, t);
 
-                // »ö¼öÂ÷: 0¿¡¼­ 1·Î Áõ°¡
-                chroma.intensity.value = Mathf.Lerp(0f, 1f, t);
+                // ìƒ‰ìˆ˜ì°¨: 0ì—ì„œ 1ê¹Œì§€ (ìƒ‰ ë²ˆì§)
+                ca.intensity.value = Mathf.Lerp(0f, 1f, t);
 
                 yield return null;
             }
         }
+        else
+        {
+            Debug.LogWarning("âš ï¸ íš¨ê³¼ ì»´í¬ë„ŒíŠ¸ë¥¼ ëª» ì°¾ì•˜ìŠµë‹ˆë‹¤. ê·¸ëƒ¥ ì´ë™í•©ë‹ˆë‹¤.");
+        }
 
-        // 3. ¾Ö´Ï¸ŞÀÌ¼Ç ¿Ï·á ÈÄ, Áï½Ã ´ÙÀ½ ¾À(03_art) ·Îµå
-        SceneManager.LoadScene(targetSceneName);
+        // íš¨ê³¼ ë! ì”¬ ì´ë™
+        SceneManager.LoadScene(nextSceneName);
     }
 }
