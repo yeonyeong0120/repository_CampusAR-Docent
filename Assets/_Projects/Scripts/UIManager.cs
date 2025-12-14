@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     private ArtworkInfo currentInfo;
 
     // 패널 높이 (숨길 위치) - 아까 Inspector에서 본 Height 값
-    private float panelHeight = 950f;
+    private float panelHeight = 1200f;
 
     private void Awake()
     {
@@ -139,7 +139,7 @@ public class UIManager : MonoBehaviour
 
         // 목표 위치: 위로 갈 땐 0, 아래로 갈 땐 -800
         Vector2 startPos = bottomSheetRect.anchoredPosition;
-        float hideOffset = -40f; // 아래쪽 덜올라오게 가림용
+        float hideOffset = -55f; // 아래쪽 덜올라오게 가림용
         Vector2 targetPos = isUp ? new Vector2(0, hideOffset) : new Vector2(0, -panelHeight);
 
         while (timer < duration)
