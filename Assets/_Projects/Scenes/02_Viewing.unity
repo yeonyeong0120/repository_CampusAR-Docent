@@ -983,6 +983,7 @@ MonoBehaviour:
   showDescButton: {fileID: 272215485}
   toggleARButton: {fileID: 1924319916}
   bottomSheetPanel: {fileID: 1513440499}
+  bottomSheetRect: {fileID: 1513440500}
   txtTitle: {fileID: 1286250047}
   txtArtist: {fileID: 1613612667}
   txtYear: {fileID: 348726064}
