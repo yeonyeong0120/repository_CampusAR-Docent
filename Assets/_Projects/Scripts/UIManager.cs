@@ -31,6 +31,8 @@ public class UIManager : MonoBehaviour
 
     [Header("UI 연결: 설명창(Bottom Sheet)")]
     public GameObject bottomSheetPanel;
+    public RectTransform bottomSheetRect;
+
     public TextMeshProUGUI txtTitle;    // 제목
     public TextMeshProUGUI txtArtist;   // 작가 [NEW]
     public TextMeshProUGUI txtYear;     // 연도 [NEW]
@@ -40,6 +42,9 @@ public class UIManager : MonoBehaviour
     public List<ArtworkInfo> artworkDatabase;
 
     private ArtworkInfo currentInfo;
+
+    // 패널 높이 (숨길 위치) - 아까 Inspector에서 본 Height 값
+    private float panelHeight = 950f;
 
     private void Awake()
     {
@@ -104,16 +109,54 @@ public class UIManager : MonoBehaviour
             txtYear.text = currentInfo.year;
 
             bottomSheetPanel.SetActive(true);
+
             showDescButton.SetActive(false);
             if (toggleARButton != null) toggleARButton.SetActive(false);
+
+            // [애니메이션] 켜고 -> 올린다
+            bottomSheetPanel.SetActive(true);
+            StopAllCoroutines(); // 혹시 내려가는 중이었다면 멈추고
+            StartCoroutine(SlidePanel(true)); // 위로(true) 슬라이드!
         }
     }
 
     public void CloseBottomSheet()
     {
-        bottomSheetPanel.SetActive(false);
+        // 버튼 다시 보이기
         showDescButton.SetActive(true);
         if (toggleARButton != null) toggleARButton.SetActive(true);
+
+        // [애니메이션] 내리고 -> 끈다
+        StopAllCoroutines();
+        StartCoroutine(SlidePanel(false)); // 아래로(false) 슬라이드!
+    }
+
+    // 슬라이드 애니메이션 코루틴 (Up: true, Down: false)
+    IEnumerator SlidePanel(bool isUp)
+    {
+        float duration = 0.3f; // 0.3초 동안 슝~
+        float timer = 0f;
+
+        // 목표 위치: 위로 갈 땐 0, 아래로 갈 땐 -800
+        Vector2 startPos = bottomSheetRect.anchoredPosition;
+        Vector2 targetPos = isUp ? new Vector2(0, 0) : new Vector2(0, -panelHeight);
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            // Lerp로 부드럽게 이동
+            bottomSheetRect.anchoredPosition = Vector2.Lerp(startPos, targetPos, timer / duration);
+            yield return null;
+        }
+
+        // 끝값 확실히 고정
+        bottomSheetRect.anchoredPosition = targetPos;
+
+        // 다 내려갔으면(닫기) 비활성화해서 성능 아끼기
+        if (!isUp)
+        {
+            bottomSheetPanel.SetActive(false);
+        }
     }
 
     IEnumerator FadeOutGuide()
