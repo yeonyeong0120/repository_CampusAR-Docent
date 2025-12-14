@@ -11,10 +11,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Projects/Scenes/01_Navigation.unity
     guid: 2a29822dfda0f434bb3ef939770b6c91
-  - enabled: 0
+  - enabled: 1
     path: Assets/_Projects/Scenes/02_Viewing.unity
     guid: bf920bd22cd56d448b09ed929d380619
-  - enabled: 0
+  - enabled: 1
     path: Assets/_Projects/Scenes/03_Reward.unity
     guid: 23707db5327f1a14daf0420208b73483
   - enabled: 0

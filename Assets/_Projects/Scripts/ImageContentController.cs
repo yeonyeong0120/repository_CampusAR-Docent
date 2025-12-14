@@ -93,7 +93,14 @@ public class ImageContentController : MonoBehaviour
         {
             if (effectMonaLisa != null) effectMonaLisa.SetActive(true);
         }
-    }
+
+        // [추가] 스탬프 매니저에게 "나 이거 찾았어!" 라고 보고
+        if (StampManager.Instance != null)
+        {
+            StampManager.Instance.CollectStamp(newName);
+        }
+
+    } // updateContent 끝
 
     // close 버튼
     // close 버튼 (기능을 On/Off 토글로 변경)
