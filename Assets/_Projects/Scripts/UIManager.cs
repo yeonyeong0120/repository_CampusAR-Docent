@@ -139,7 +139,8 @@ public class UIManager : MonoBehaviour
 
         // 목표 위치: 위로 갈 땐 0, 아래로 갈 땐 -800
         Vector2 startPos = bottomSheetRect.anchoredPosition;
-        Vector2 targetPos = isUp ? new Vector2(0, 0) : new Vector2(0, -panelHeight);
+        float hideOffset = -40f; // 아래쪽 덜올라오게 가림용
+        Vector2 targetPos = isUp ? new Vector2(0, hideOffset) : new Vector2(0, -panelHeight);
 
         while (timer < duration)
         {
