@@ -45,7 +45,7 @@ public class StampManager : MonoBehaviour
 
         // 티켓 숨기기 (위로 올려서 Mask에 가려지게 함)
         // Y값을 200 정도로 올려서 안보이게 세팅
-        ticketRect.anchoredPosition = new Vector2(0, 200);
+        ticketRect.anchoredPosition = new Vector2(0, 250);
         if (btnStampBoard != null)
         {
             btnStampBoard.interactable = false; // 아직 스탬프 다 안 모았으니까 클릭 금지
@@ -102,19 +102,32 @@ public class StampManager : MonoBehaviour
     {
         isAllClear = true;
         Debug.Log("ALL CLEAR! 보상 루틴 시작");
-        // 보드판 버튼 활성화! (이제 누를 수 있음)
+
+        // 1. 보드판 버튼 활성화!
         if (btnStampBoard != null) btnStampBoard.interactable = true;
 
-        // 황금색 깜빡임 효과 (무한 반복 or 일정 시간)
-        // 여기선 사용자가 누를 때까지 계속 황금색으로 빛나게 합시다.
-        if (stampBoardOutline != null)
+        // 2. 색상 준비
+        Color originalColor = new Color(0, 0, 0, 0.5f); // 원래 검정 반투명 (Inspector 설정에 맞게 조절)
+        Color goldColor;
+        ColorUtility.TryParseHtmlString("#C5A059", out goldColor);
+
+        // [추가] "티켓이 내려오기 전까지" 계속 깜빡거려라! (while문 추가)
+        while (!isTicketDropped)
         {
-            Color goldColor;
-            ColorUtility.TryParseHtmlString("#C5A059", out goldColor);
-            stampBoardOutline.color = goldColor;
+            // PingPong 함수를 써서 0~1 사이를 왔다 갔다 하게 만듭니다. (속도 3)
+            float t = Mathf.PingPong(Time.time * 3f, 1f);
+
+            if (stampBoardOutline != null)
+            {
+                // 원래색 <-> 황금색 사이를 부드럽게 왔다 갔다
+                stampBoardOutline.color = Color.Lerp(originalColor, goldColor, t);
+            }
+
+            yield return null; // 한 프레임 대기 (이게 없으면 멈춤!)
         }
 
-        yield return null;
+        // 티켓이 내려오면 루프 탈출 -> 황금색으로 고정
+        if (stampBoardOutline != null) stampBoardOutline.color = goldColor;
     }
 
     void OnStampBoardClicked()
@@ -134,7 +147,7 @@ public class StampManager : MonoBehaviour
         // 티켓 슬라이드 다운
         Vector2 startPos = ticketRect.anchoredPosition;
         // [수정] 더 많이 내려오게 좌표 수정 (-450)
-        Vector2 targetPos = new Vector2(0, -450);
+        Vector2 targetPos = new Vector2(0, -80);
 
         float slideTimer = 0f;
         while (slideTimer < 1f)
