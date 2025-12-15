@@ -18,10 +18,10 @@ public class ARGalleryManager : MonoBehaviour
     public List<ArtInfo> artList;
     public float popupDisplayTime = 3f; // ← 팝업 표시 시간 (초)
 
-    private Dictionary<string, GameObject> spawnedPopups = new Dictionary<string, GameObject>();
+    private Dictionary<string, GameObject> spawnedPopups = new Dictionary<string, GameObject>();
     private Dictionary<string, Coroutine> popupTimers = new Dictionary<string, Coroutine>(); // ← 타이머 관리
 
-    void OnEnable()
+    void OnEnable()
     {
         imageManager.trackedImagesChanged += OnImageChanged;
     }
@@ -33,8 +33,8 @@ public class ARGalleryManager : MonoBehaviour
 
     void OnImageChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
-        // 1. 새로운 그림을 찾았을 때 (Added)
-        foreach (var newImage in eventArgs.added)
+        // 1. 새로운 그림을 찾았을 때 (Added)
+        foreach (var newImage in eventArgs.added)
         {
             string name = newImage.referenceImage.name;
 
@@ -42,10 +42,20 @@ public class ARGalleryManager : MonoBehaviour
             {
                 if (art.imageName.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
-                    GameObject popup = Instantiate(art.popupPrefab, newImage.transform);
-                    popup.transform.localPosition = Vector3.zero;
-                    popup.transform.localRotation = Quaternion.identity;
-                    popup.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
+                    // 팝업 생성 (월드 공간에 생성)
+                    GameObject popup = Instantiate(art.popupPrefab);
+
+                    // 명화 팝업의 위치와 회전을 추적된 이미지의 위치/회전으로 설정합니다.
+                    popup.transform.position = newImage.transform.position;
+                    popup.transform.rotation = newImage.transform.rotation;
+
+                    // 명화 팝업을 추적된 이미지의 자식으로 설정합니다. (벽에 고정)
+                    popup.transform.SetParent(newImage.transform);
+
+
+                    // 🚨 [수정됨] 크기 강제 설정 코드를 제거하고 프리팹 설정을 따릅니다.
+                    popup.transform.localScale = Vector3.one;
+
 
                     popup.SetActive(true);
                     foreach (Transform child in popup.GetComponentsInChildren<Transform>(true))
@@ -53,7 +63,8 @@ public class ARGalleryManager : MonoBehaviour
                         child.gameObject.SetActive(true);
                     }
 
-                    Canvas popupCanvas = popup.GetComponentInChildren<Canvas>(true);
+                    // Canvas 설정 로직
+                    Canvas popupCanvas = popup.GetComponentInChildren<Canvas>(true);
                     if (popupCanvas != null)
                     {
                         popupCanvas.renderMode = RenderMode.WorldSpace;
@@ -76,7 +87,8 @@ public class ARGalleryManager : MonoBehaviour
                         Debug.Log("✅ Canvas 설정 완료!");
                     }
 
-                    var images = popup.GetComponentsInChildren<UnityEngine.UI.Image>(true);
+                    // 텍스트, 이미지 활성화 로직
+                    var images = popup.GetComponentsInChildren<UnityEngine.UI.Image>(true);
                     foreach (var img in images)
                     {
                         img.enabled = true;
@@ -96,8 +108,8 @@ public class ARGalleryManager : MonoBehaviour
 
                     spawnedPopups[name] = popup;
 
-                    // ⭐ 3초 타이머 시작
-                    if (popupTimers.ContainsKey(name))
+                    // ⭐ 3초 타이머 시작
+                    if (popupTimers.ContainsKey(name))
                     {
                         StopCoroutine(popupTimers[name]);
                     }
@@ -108,20 +120,20 @@ public class ARGalleryManager : MonoBehaviour
             }
         }
 
-        // 2. 계속 추적 중인 이미지 (Updated)
-        foreach (var updatedImage in eventArgs.updated)
+        // 2. 계속 추적 중인 이미지 (Updated)
+        foreach (var updatedImage in eventArgs.updated)
         {
             if (spawnedPopups.ContainsKey(updatedImage.referenceImage.name))
             {
                 GameObject popup = spawnedPopups[updatedImage.referenceImage.name];
 
-                // 추적 중이면 팝업 표시
-                if (updatedImage.trackingState == UnityEngine.XR.ARSubsystems.TrackingState.Tracking)
+                // 추적 중이면 팝업 표시
+                if (updatedImage.trackingState == UnityEngine.XR.ARSubsystems.TrackingState.Tracking)
                 {
                     popup.SetActive(true);
 
-                    // ⭐ 다시 보이면 타이머 재시작
-                    string name = updatedImage.referenceImage.name;
+                    // ⭐ 다시 보이면 타이머 재시작
+                    string name = updatedImage.referenceImage.name;
                     if (popupTimers.ContainsKey(name))
                     {
                         StopCoroutine(popupTimers[name]);
@@ -135,14 +147,14 @@ public class ARGalleryManager : MonoBehaviour
             }
         }
 
-        // 3. 이미지가 추적을 잃었을 때 (Removed)
-        foreach (var removedImage in eventArgs.removed)
+        // 3. 이미지가 추적을 잃었을 때 (Removed)
+        foreach (var removedImage in eventArgs.removed)
         {
             string name = removedImage.referenceImage.name;
             if (spawnedPopups.ContainsKey(name))
             {
-                // 타이머 중지
-                if (popupTimers.ContainsKey(name))
+                // 타이머 중지
+                if (popupTimers.ContainsKey(name))
                 {
                     StopCoroutine(popupTimers[name]);
                     popupTimers.Remove(name);
@@ -155,8 +167,8 @@ public class ARGalleryManager : MonoBehaviour
         }
     }
 
-    // ⭐ 3초 후 팝업 숨기는 루틴
-    IEnumerator HidePopupAfterDelay(string imageName, float delay)
+    // ⭐ 3초 후 팝업 숨기는 루틴
+    IEnumerator HidePopupAfterDelay(string imageName, float delay)
     {
         yield return new WaitForSeconds(delay);
 
