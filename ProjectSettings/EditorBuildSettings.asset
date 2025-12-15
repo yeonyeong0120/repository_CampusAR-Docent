@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/ARNavigation 2.unity
     guid: c2f55c4884f587f41bb26b6ff146867e
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Projects/Scenes/02_Viewing.unity
     guid: bf920bd22cd56d448b09ed929d380619
   - enabled: 1
