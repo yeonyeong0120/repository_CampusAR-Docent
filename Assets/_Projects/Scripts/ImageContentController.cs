@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.UI;
 
 public class ImageContentController : MonoBehaviour
 {
@@ -20,6 +21,24 @@ public class ImageContentController : MonoBehaviour
     void Start()
     {
         DisableAll();
+
+        // UIManager야, 니가 들고 있는 'toggleARButton' 좀 빌려줘!
+        if (UIManager.Instance != null && UIManager.Instance.toggleARButton != null)
+        {
+            // 버튼 컴포넌트를 가져옵니다.
+            Button btn = UIManager.Instance.toggleARButton.GetComponent<Button>();
+
+            if (btn != null)
+            {
+                // 만약 이전에 연결된 게 있다면 지우고 (중복 방지)
+                btn.onClick.RemoveAllListeners();
+
+                // 내 기능(ToggleContent)을 연결해라!
+                btn.onClick.AddListener(ToggleContent);
+
+                Debug.Log("[AR] 토글 버튼이 성공적으로 연결되었습니다!");
+            }
+        }
 
     }
 
@@ -49,13 +68,18 @@ public class ImageContentController : MonoBehaviour
         // 아까랑 똑같은 거면 무시 (최적화)
         if (currentActiveName == newName) return;
 
-        // ------------------------------------------------
-        // 여기까지 왔으면 안전함! 이제직동 시작
-
         DisableAll();
-
         currentActiveName = newName;
+
+        // 디버그 추가,,,,
         Debug.Log($"[AR] 이미지 변경 감지! -> {newName}");
+
+
+        // ui 매니저한테 알림
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.OnImageRecognized(newName);
+        }
 
         if (newName.Contains("Starry"))
         {
@@ -69,7 +93,14 @@ public class ImageContentController : MonoBehaviour
         {
             if (effectMonaLisa != null) effectMonaLisa.SetActive(true);
         }
-    }
+
+        // [추가] 스탬프 매니저에게 "나 이거 찾았어!" 라고 보고
+        if (StampManager.Instance != null)
+        {
+            StampManager.Instance.CollectStamp(newName);
+        }
+
+    } // updateContent 끝
 
     // close 버튼
     // close 버튼 (기능을 On/Off 토글로 변경)
@@ -85,6 +116,7 @@ public class ImageContentController : MonoBehaviour
         else
         {
             // 현재 꺼져 있으면: 이미지 이름에 맞는 콘텐츠를 켭니다 (ON)
+            currentActiveName = "";
             UpdateContent();
         }
 
