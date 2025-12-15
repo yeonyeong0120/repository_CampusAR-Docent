@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,16 +8,16 @@ public class SceneController : MonoBehaviour
     public static SceneController Instance;
 
     [Header("Loading UI")]
-    public CanvasGroup loadingCanvasGroup; // °ËÀº È­¸é °¡¸²¸·
+    public CanvasGroup loadingCanvasGroup; // ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public float fadeDuration = 0.5f;
 
     private void Awake()
     {
-        // ½Ì±ÛÅæ ÆÐÅÏ // ÀÌ ¿ÀºêÁ§Æ®´Â ¾ÀÀÌ ¹Ù²î¾îµµ ÆÄ±«µÇÁö ¾ÊÀ½
+        // ï¿½Ì±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½îµµ ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // ¾À ÀÌµ¿ ½Ã »ì¾Æ³²À½
+            DontDestroyOnLoad(gameObject); // ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ ï¿½ï¿½Æ³ï¿½ï¿½ï¿½
         }
         else
         {
@@ -27,12 +27,12 @@ public class SceneController : MonoBehaviour
 
     private void Start()
     {
-        // ½ÃÀÛÇÒ ¶§´Â ·Îµù È­¸éÀ» ¼û±è
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         loadingCanvasGroup.alpha = 0;
         loadingCanvasGroup.blocksRaycasts = false;
     }
 
-    // ¿ÜºÎ¿¡¼­ ÀÌ ÇÔ¼ö¸¦ È£ÃâÇØ¼­ ¾ÀÀ» ÀÌµ¿ÇÔ
+    // ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½
     public void LoadScene(string sceneName)
     {
         StartCoroutine(LoadSceneRoutine(sceneName));
@@ -40,8 +40,8 @@ public class SceneController : MonoBehaviour
 
     private IEnumerator LoadSceneRoutine(string sceneName)
     {
-        // 1. ÆäÀÌµå ¾Æ¿ô (°ËÀº È­¸éÀÌ ³ªÅ¸³²) - "ÀÛÇ° °ü¶÷ ¸ðµå·Î ÀüÈ¯ Áß..." 
-        loadingCanvasGroup.blocksRaycasts = true; // ÅÍÄ¡ Â÷´Ü
+        // 1. ï¿½ï¿½ï¿½Ìµï¿½ ï¿½Æ¿ï¿½ (ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½) - "ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½..." 
+        loadingCanvasGroup.blocksRaycasts = true; // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
         float timer = 0f;
         while (timer < fadeDuration)
         {
@@ -51,13 +51,13 @@ public class SceneController : MonoBehaviour
         }
         loadingCanvasGroup.alpha = 1f;
 
-        // 2. ºñµ¿±â ¾À ·Îµå (¸Þ¸ð¸® Á¤¸® ¹× ·Îµù)
+        // 2. ï¿½ñµ¿±ï¿½ ï¿½ï¿½ ï¿½Îµï¿½ (ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Îµï¿½)
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
-        op.allowSceneActivation = false; // ·Îµù ´Ù µÉ ¶§±îÁö ´ë±â
+        op.allowSceneActivation = false; // ï¿½Îµï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 
         while (!op.isDone)
         {
-            // ·ÎµùÀÌ 90% ÀÌ»ó µÇ¸é ÁøÇà
+            // ï¿½Îµï¿½ï¿½ï¿½ 90% ï¿½Ì»ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (op.progress >= 0.9f)
             {
                 op.allowSceneActivation = true;
@@ -65,7 +65,7 @@ public class SceneController : MonoBehaviour
             yield return null;
         }
 
-        // 3. ÆäÀÌµå ÀÎ (°ËÀº È­¸éÀÌ »ç¶óÁü)
+        // 3. ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½)
         timer = 0f;
         while (timer < fadeDuration)
         {
@@ -74,6 +74,6 @@ public class SceneController : MonoBehaviour
             yield return null;
         }
         loadingCanvasGroup.alpha = 0f;
-        loadingCanvasGroup.blocksRaycasts = false; // ÅÍÄ¡ Çã¿ë
+        loadingCanvasGroup.blocksRaycasts = false; // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
     }
 }
