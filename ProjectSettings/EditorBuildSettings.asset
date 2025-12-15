@@ -8,21 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Projects/Scenes/00_Start.unity
     guid: ff8034f7fe8a2584b99c096c65d7466a
-  - enabled: 0
-    path: Assets/Scenes/ARNavigation 2.unity
-    guid: c2f55c4884f587f41bb26b6ff146867e
-  - enabled: 0
+  - enabled: 1
+    path: Assets/Scenes/ARNavigation 3.unity
+    guid: 222267c54eb6dca468b33ad451428353
+  - enabled: 1
     path: Assets/_Projects/Scenes/02_Viewing.unity
     guid: bf920bd22cd56d448b09ed929d380619
   - enabled: 1
     path: Assets/_Projects/Scenes/03_Reward.unity
     guid: 23707db5327f1a14daf0420208b73483
-  - enabled: 0
-    path: Assets/_Projects/Scenes/01_Navigation.unity
-    guid: 2a29822dfda0f434bb3ef939770b6c91
-  - enabled: 0
-    path: Assets/Scenes/ARNavigation 2.unity
-    guid: c2f55c4884f587f41bb26b6ff146867e
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 94b01b3c520a43747a46b48ecad412fd, type: 2}
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 73cb75bc65f511c4ba1c00f2386c8713, type: 2}
